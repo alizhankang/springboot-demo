@@ -1,0 +1,10 @@
+# 开发环境配置文件
+# 应用服务 WEB 访问端口
+server:
+  port: 8080
+
+# 配置信息
+url:
+  orderUrl: http://localhost:9002
+  userUrl: http://localhost:9003
+  shoppingUrl: http://localhost:9004
