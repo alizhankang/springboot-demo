@@ -1,12 +1,11 @@
 package com.lizhankang.springbootdemo.controller;
 
 import com.lizhankang.springbootdemo.dto.response.JsonResult;
+import com.lizhankang.springbootdemo.exception.BusinessException;
+import com.lizhankang.springbootdemo.exception.BusinessExceptionEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/exception")
@@ -21,4 +20,16 @@ public class ExceptionController {
         logger.info("pass：{}", pass);
         return new JsonResult();
     }
+
+    // http://localhost:8080/exception/business
+    @GetMapping("/business")
+    public JsonResult testException() {
+        try {
+            int i = 1 / 0;
+        } catch (Exception e) {
+            throw new BusinessException(BusinessExceptionEnum.UNEXPECTED_EXCEPTION);
+        }
+        return new JsonResult();
+    }
+
 }

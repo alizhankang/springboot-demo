@@ -13,10 +13,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionHandler {
+    /*
+    当监测到系统抛出以下 异常对象 时，就会执行对应的方法
+     */
+
     // 打印log
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     // ……
 
+    /*
+    系统异常
+     */
     /**
      * 缺少请求参数异常
      * @param ex HttpMessageNotReadableException
@@ -52,5 +59,21 @@ public class GlobalExceptionHandler {
     public JsonResult handleUnexpectedServer(Exception ex) {
         logger.error("系统异常：", ex);
         return new JsonResult("500", "系统发生异常，请联系管理员");
+    }
+
+    /*
+    自定义业务异常
+     */
+    /**
+     * 拦截业务异常，返回业务异常信息
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public JsonResult handleBusinessError(BusinessException ex) {
+        String code = ex.getCode();
+        String message = ex.getMessage();
+        return new JsonResult(code, message);
     }
 }
