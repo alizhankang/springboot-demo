@@ -1,6 +1,6 @@
 package com.lizhankang.springbootdemo.exception;
 
-public enum BusinessExceptionEnum {
+public enum BizExceptionEnum {
     /** 参数异常 */
     PARMETER_EXCEPTION("102", "参数异常!"),
     /** 等待超时 */
@@ -20,7 +20,7 @@ public enum BusinessExceptionEnum {
      */
     private String msg;
 
-    private BusinessExceptionEnum(String code, String msg) {
+    private BizExceptionEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }

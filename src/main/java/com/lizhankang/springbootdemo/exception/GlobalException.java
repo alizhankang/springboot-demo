@@ -1,24 +1,24 @@
 package com.lizhankang.springbootdemo.exception;
 
 import com.lizhankang.springbootdemo.dto.response.JsonResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class GlobalExceptionHandler {
+public class GlobalException {
     /*
     当监测到系统抛出以下 异常对象 时，就会执行对应的方法
      */
 
     // 打印log
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalException.class);
     // ……
 
     /*
@@ -69,9 +69,9 @@ public class GlobalExceptionHandler {
      * @param ex
      * @return
      */
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(BizException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public JsonResult handleBusinessError(BusinessException ex) {
+    public JsonResult handleBusinessError(BizException ex) {
         String code = ex.getCode();
         String message = ex.getMessage();
         return new JsonResult(code, message);

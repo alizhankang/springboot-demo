@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizhankang.springbootdemo.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.lizhankang.springbootdemo.dao.entity.User">
+        <!--数据库表字段与类属性名的映射关系-->
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    </resultMap>
+
+    <select id="getUserByName" resultType="com.lizhankang.springbootdemo.dao.entity.User" parameterType="String">
+        select * from user where user_name = #{userName}
+    </select>
+
+    <select id="getUserById" resultType="com.lizhankang.springbootdemo.dao.entity.User" parameterType="Integer">
+        select * from user where id = #{id}
+    </select>
+
+    <insert id="registerUser" parameterType="com.lizhankang.springbootdemo.dao.entity.User">
+        INSERT INTO user (user_name, pass_word)
+        VALUES (#{userName,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR})
+
+    </insert>
+</mapper>

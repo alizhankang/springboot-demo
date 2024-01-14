@@ -30,12 +30,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "用户实体类")
-public class User implements Serializable{
+public class ReqUser implements Serializable{
     @ApiModelProperty(value = "用户唯一标识")
     private int id;
     @ApiModelProperty(value = "用户姓名")
-    private String username;
+    private String user_name;
     @ApiModelProperty(value = "用户密码")
-    private String password;
+    private String pass_word;
     /* 省略get、set和带参构造方法 */
 }
