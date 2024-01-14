@@ -1,0 +1,8 @@
+# 核心配置文件
+spring:
+  profiles:
+    active:
+      - dev
+  mvc:  # Spring Boot 2.6.X使用PathPatternMatcher匹配路径，Swagger引用的Springfox使用的路径匹配是基于AntPathMatcher的。
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER

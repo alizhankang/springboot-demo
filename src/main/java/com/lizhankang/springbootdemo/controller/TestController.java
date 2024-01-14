@@ -1,6 +1,6 @@
 package com.lizhankang.springbootdemo.controller;
 
-import com.lizhankang.springbootdemo.dto.request.User;
+import com.lizhankang.springbootdemo.dto.request.ReqUser;
 import com.lizhankang.springbootdemo.dto.response.JsonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,9 +23,9 @@ public class TestController {
 
     @GetMapping("/get/{id}")
     @ApiOperation(value = "根据用户唯一标识获取用户信息")
-    public JsonResult<User> getUserInfo(@PathVariable @ApiParam(value = "用户唯一标识") int id) {
+    public JsonResult<ReqUser> getUserInfo(@PathVariable @ApiParam(value = "用户唯一标识") int id) {
         // 模拟数据库中根据id获取User信息
-        User user = new User(id, "测试", "123456");
-        return new JsonResult(user);
+        ReqUser reqUser = new ReqUser(id, "测试", "123456");
+        return new JsonResult(reqUser);
     }
 }

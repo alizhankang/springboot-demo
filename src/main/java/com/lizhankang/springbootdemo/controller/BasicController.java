@@ -16,7 +16,7 @@
 
 package com.lizhankang.springbootdemo.controller;
 
-import com.lizhankang.springbootdemo.dto.request.User;
+import com.lizhankang.springbootdemo.dto.request.ReqUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,19 +43,19 @@ public class BasicController {
     // http://127.0.0.1:8080/user
     @RequestMapping("/user")
     @ResponseBody
-    public User user() {
-        User user = new User();
-        user.setUsername("lisi");
-        user.setPassword("666");
-        log.info("日志记录: {}", user);
-        return user;
+    public ReqUser user() {
+        ReqUser reqUser = new ReqUser();
+        reqUser.setUser_name("lisi");
+        reqUser.setPass_word("666");
+        log.info("日志记录: {}", reqUser);
+        return reqUser;
     }
 
     // http://127.0.0.1:8080/save_user
     @RequestMapping("/save_user")
     @ResponseBody
-    public String saveUser(User u) {
-        return "user will save: name=" + u.getUsername() + ", password=" + u.getPassword();
+    public String saveUser(ReqUser u) {
+        return "user will save: name=" + u.getUser_name() + ", password=" + u.getPass_word();
     }
 
     // http://127.0.0.1:8080/html
@@ -69,8 +69,8 @@ public class BasicController {
      */
     @ModelAttribute
     public void parseUser(@RequestParam(name = "name", defaultValue = "unknown user") String name
-            , @RequestParam(name = "age", defaultValue = "12") Integer age, User user) {
-        user.setUsername("zhangsan");
-        user.setPassword("18");
+            , @RequestParam(name = "age", defaultValue = "12") Integer age, ReqUser reqUser) {
+        reqUser.setUser_name("zhangsan");
+        reqUser.setPass_word("18");
     }
 }

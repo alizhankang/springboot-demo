@@ -1,6 +1,6 @@
 <!--在 logback.xml 中，我们可以定义日志输出的格式、路径、控制台输出格式、文件大小、保存时长等等-->
 <configuration>
-    <!-- 格式化输出：%date表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符-->
+    <!-- 日志格式(格式化输出)：%date表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符-->
     <property name="LOG_FORMAT" value="%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
     <!-- 定义日志存储的路径，不要配置相对路径 -->
     <property name="LOG_PATH" value="/Users/lizhankang/privateProjects/javaProjects/springboot-demo/logs/Log-%d{yyyy-MM-dd}.%i.log" />

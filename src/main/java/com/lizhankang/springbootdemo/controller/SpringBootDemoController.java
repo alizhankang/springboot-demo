@@ -1,15 +1,16 @@
 package com.lizhankang.springbootdemo.controller;
 import com.lizhankang.springbootdemo.config.MicroServiceUrl;
-import com.lizhankang.springbootdemo.dto.request.User;
+import com.lizhankang.springbootdemo.dto.request.ReqUser;
+import com.lizhankang.springbootdemo.dao.entity.User;
 import com.lizhankang.springbootdemo.sevice.SpringBootDemoService;
 import com.lizhankang.springbootdemo.dto.response.JsonResult;
+import com.lizhankang.springbootdemo.sevice.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +25,15 @@ public class SpringBootDemoController {
     @Autowired
     private SpringBootDemoService springBootDemoService;
 
-    // @Value 注解上通过 ${key} 即可获取配置文件中和 key 对应的 value 值。
+    // @Value 注解上通过 ${key} 即可获取配置文件中的配置信息。
     @Value("${url.orderUrl}")
     private String orderUrl;
 
     @Resource  // @Resource注解 注入配置类对象，声明该bean对象是一个配置类对象
     private MicroServiceUrl microServiceUrl;
+
+    @Resource
+    private UserService userService;
 
     /*
     无参请求
@@ -40,36 +44,25 @@ public class SpringBootDemoController {
         return "Welcome to the world of Spring Boot!";
     }
 
-    // http://localhost:8080/springboot/user
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public JsonResult<User> getUser(@RequestParam(name = "idd", defaultValue = "1") String id) {
-        LOGGER.info("--------- DemoController.getById start ---------");
-        LOGGER.info("[DemoController.getById]根据ID查询用户信息: id = {}", id);
-        // call service
-        String result = springBootDemoService.getById(id);
-        // 返回最终结果
-        LOGGER.info("--------- DemoController.getById over ---------");
-        User user = new User(1, "测试", "123456");
-        return new JsonResult<>(user);
-    }
+
 
     // http://localhost:8080/springboot/list
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public JsonResult<List> getUserList() {
-        List<User> userList = new ArrayList<>();
-        User user1 = new User(1, "测试", "123456");
-        User user2 = new User(2, "测试课", "123456");
-        userList.add(user1);
-        userList.add(user2);
-        return new JsonResult<>(userList, "获取用户列表成功");
+        List<ReqUser> reqUserList = new ArrayList<>();
+        ReqUser reqUser1 = new ReqUser(1, "测试", "123456");
+        ReqUser reqUser2 = new ReqUser(2, "测试课", "123456");
+        reqUserList.add(reqUser1);
+        reqUserList.add(reqUser2);
+        return new JsonResult<>(reqUserList, "获取用户列表成功");
     }
 
     // http://localhost:8080/springboot/map
     @RequestMapping(value = "/map", method = RequestMethod.GET)
     public JsonResult<Map> getMap() {
         Map<String, Object> map = new HashMap<>(3);
-        User user = new User(1, "测试", null);
-        map.put("作者信息", user);
+        ReqUser reqUser = new ReqUser(1, "测试", null);
+        map.put("作者信息", reqUser);
         map.put("博客地址", "https://blog.itcodai.com");
         map.put("CSDN地址", null);
         map.put("粉丝数量", 4153);
@@ -162,18 +155,18 @@ public class SpringBootDemoController {
     // 针对这种情况，我们需要封装一个实体类来接收这些参数，实体中的属性名和表单中的参数名一致即可。
     // 使用实体接收的话，我们不能在前面加 @RequestParam 注解了，直接使用即可。
     @PostMapping("/form2")
-    public String testForm(User user) {
-        System.out.println("获取到的username为：" + user.getUsername());
-        System.out.println("获取到的password为：" + user.getPassword());
+    public String testForm(ReqUser reqUser) {
+        System.out.println("获取到的username为：" + reqUser.getUser_name());
+        System.out.println("获取到的password为：" + reqUser.getPass_word());
         return "success";
     }
 
     // @RequestBody 注解用于 POST 请求上，接收 json 实体参数
     //      它和上面我们介绍的表单提交有点类似，只不过参数的格式不同，一个是 json 实体，一个是表单提交。在实际项目中根据具体场景和需要使用对应的注解即可。
     @PostMapping("/user")
-    public String testRequestBody(@RequestBody User user) {
-        System.out.println("获取到的username为：" + user.getUsername());
-        System.out.println("获取到的password为：" + user.getPassword());
+    public String testRequestBody(@RequestBody ReqUser reqUser) {
+        System.out.println("获取到的username为：" + reqUser.getUser_name());
+        System.out.println("获取到的password为：" + reqUser.getPass_word());
         return "success";
     }
     /*
@@ -183,9 +176,23 @@ public class SpringBootDemoController {
         3.@PathValue: 获取URL的path参数
         4.@RequestBody: 以实体类的形式获取请求体中的json参数
      */
+    @PostMapping("/register")
+    public String registerUser(@RequestBody ReqUser reqUser) {
+        LOGGER.info("提交的用户信息：{}", reqUser);
+        LOGGER.info("提交的用户信息：{}", reqUser);
+        Integer i = userService.registerUser(reqUser);
+        if (!i.equals(Integer.valueOf(1))) {
+            throw new RuntimeException();
+        }
+        return "success";
+    }
 
-
-
+    @GetMapping("/user/getById")
+    public JsonResult<User> getById(@RequestParam Integer id){
+        User user = userService.getUserById(id);
+        JsonResult<User> jsonResult = new JsonResult<>(user);
+        return jsonResult;
+    }
 
 
 }
