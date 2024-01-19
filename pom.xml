@@ -17,7 +17,7 @@
     </properties>
 
     <dependencies>
-        <!--代表使用了 springboot 开发-->
+        <!--web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
